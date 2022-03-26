@@ -1,0 +1,1 @@
+web: gunicorn project_show.wsgi --timeout 120

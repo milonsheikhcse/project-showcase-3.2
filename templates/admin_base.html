@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet"
+        href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css"
+        integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/css/style.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous"/>
+    {% block title %}
+    {% endblock %}
+
+    <style>
+        @-webkit-keyframes spinner-grow {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+    
+            50% {
+                opacity: 1;
+            }
+        }
+    
+        @keyframes spinner-grow {
+            0% {
+                -webkit-transform: scale(0);
+                transform: scale(0);
+            }
+    
+            50% {
+                opacity: 1;
+            }
+        }
+    
+        .spinner-grow {
+            display: inline-block;
+            width: 2rem;
+            height: 2rem;
+            vertical-align: text-bottom;
+            background-color: currentColor;
+            border-radius: 50%;
+            opacity: 0;
+            -webkit-animation: spinner-grow .75s linear infinite;
+            animation: spinner-grow .75s linear infinite;
+        }
+    
+        .spinner-grow-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+    </style>
+    {% block style %}
+    {% endblock %}
+</head>
+
+<body class="bg-light">
+    <!-- header -->
+    <div class="container-fluid" id="header">
+        <div id="hamburger" class="d-none">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="row">
+            <div class="col-md-9 d-flex">
+                <img src="/static/images/bulb-icon.png" alt="" class="" style="height: 95px; width: 95px; padding: 5px;" />
+                <div class="text-left text-white pl-2">
+                    <a href="{% url 'user:index' %}" id="title">Project Showcase</a>
+                    <i class="d-block">
+                    A Place Where You Can Share Your Projects
+                    </i>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-md-right text-center text-white py-2">
+                <div class="float-md-right mx-md-">
+                    {% if not user.is_authenticated %}
+                    <a href="" class="btn btn-outline-light mr-2" data-toggle="modal" data-target="#login-modal">Login</a>
+                    <a href="" class="btn btn-outline-light" data-toggle="modal" data-target="#reg-modal">Register</a>
+                    {% else %}
+                    <a href="{% url 'user:logout' %}" class="btn btn-outline-light">Logout</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid pt-4 px-md-0 p-4"> 
+        <div class="row">
+            <!-- navigation -->
+            <div class="col-md-2" id="nav">
+                <ul>
+                    <li><a href="{% url 'admin_app:submissions' %}">Submissions</a></li>
+                    <li><a href="{% url 'admin_app:all' %}">All Projects</a></li>
+                </ul>
+            </div>
+            
+            <!-- body text -->
+            {% block content %}
+            {% endblock %}
+            
+            <!-- reght tab  -->
+            <div class="col-md-3 bg-ad">
+                <div class="pr-2">
+
+                    <img src="/static/images/open_access.png" class="img-fluid mt-3">
+
+                    <img src="/static/images/cross_ref.png" class="img-fluid mt-3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/alerting.js"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js"
+        integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9"
+        crossorigin="anonymous"></script>
+    <script>$(document).ready(function () { $('body').bootstrapMaterialDesign(); });</script>
+
+    <script>
+    function do_action(event){
+        event.preventDefault();
+        $(event.target.firstElementChild).addClass('spinner-grow spinner-grow-sm');
+        $.ajax({
+            type: 'post',
+            url: event.target.attributes.url.value,
+            data: {
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+            },
+            success: function (data) {
+                $(event.target.firstElementChild).removeClass('spinner-grow spinner-grow-sm')
+                if (data.status == true) {
+                    success_alert(data.msg);
+
+                    window.setTimeout(function () {
+                    window.location.href = data.url;
+                    }, 1500);
+                }
+                else {
+                    $(event.target.firstElementChild).removeClass('spinner-grow spinner-grow-sm')
+                    error_alert(data.msg);
+                }
+            },
+        });
+    }
+    </script>
+
+    {% block script %}
+    {% endblock %}
+</body>
+
+</html>

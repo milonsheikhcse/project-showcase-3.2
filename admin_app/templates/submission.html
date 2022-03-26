@@ -1,0 +1,83 @@
+{% extends 'admin_base.html' %}
+
+{% block title %}
+<title>Submissions</title>
+{% endblock %}
+
+{% block style %}
+<style>
+    .download:hover {
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="col-md-7 text-justify">
+    {% if projects.count == 0 %}
+    <div class="alert alert-warning d-flex flex-row justify-content-center">
+        Did you submit any&nbsp;<strong>Awesome Project</strong>?
+    </div>
+    {% else %}
+    <table class="table">
+        <tr>
+            <th>Add Time</th>
+            <th>Project Title</th>
+            <th>Actions</th>
+            
+        </tr>
+        {% for project in projects %}
+        <tr>
+            <td>{{ project.last_updated }}</td>
+            <td>
+                <a href="" class="text-primary download" onclick="details(event)" url="{% url 'projects:details' project.pk %}" data-toggle="modal" data-target="#container-modal">
+                    {{ project.project_name|title }}
+                </a>
+            </td>
+            <td>
+                <button class="btn btn-outline-success" onclick="do_action(event)" url="{% url 'admin_app:accept' project.pk %}">
+                    <span class="" role="status" aria-hidden="true"></span>
+                    Accept
+                </button>
+                <button class="btn btn-outline-danger ml-2" onclick="do_action(event)" url="{% url 'admin_app:reject' project.pk %}">
+                    <span class="" role="status" aria-hidden="true"></span>
+                    Reject
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+</div>
+
+ <!-- container modal -->
+<div class="modal fade" id="container-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <!-- <h4 class="modal-title">Seller Registration</h4> -->
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" id="dynamic-load">
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function details(event){
+    event.preventDefault();
+    $('#dynamic-load').html('')
+    $('#dynamic-load').load(
+        event.target.attributes.url.value
+    )
+}
+</script>
+{% endblock %}

@@ -1,0 +1,116 @@
+:root{
+    --primary: #0165BD !important;
+}
+body{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+#header{
+    background: #0165BD;
+    border: 8px solid #0165BD;
+    /* border: 8px solid #F8F9FA; */
+}
+
+#logo-image{
+    padding: 8px;
+    height: 120px;
+    width: 120px;
+}
+
+#header #title{
+    font-size: 2rem;
+    color: #fff;
+    font-weight: bolder;
+    text-decoration: none;
+}
+#header #title:hover{
+    text-decoration: none;
+}
+
+
+#nav ul{
+    display: block;
+    list-style: none;
+    padding-left: 10px;
+}
+
+#nav ul li{
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    background: #0165BD;
+    margin-bottom: 3px;
+}
+#nav ul li.active{
+    background: #128bf5;
+}
+#nav ul li:hover{
+    background: #0483f1;
+}
+#nav ul li a{
+    color: #fff;
+    text-decoration: none;
+}
+.dropdown-menu .dropdown-item{
+    color: #000 !important;
+}
+.bg-ad{
+    background: rgba(0, 0, 0, 0.03);
+}
+.max-width-400{
+    display: block;
+    width: 100%;
+    max-width: 450px;
+}
+@media screen and (max-width:768px){
+    body{
+        font-size: 12px;
+    }
+    #header .d-flex{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    #header .d-flex .text-left #title{
+        font-size:1.2rem;
+        text-align: center;
+        display: block;
+    }
+    #header .d-flex .text-left i{
+        text-align: center;
+    }
+    #nav{
+        position: fixed;
+        z-index: 999;
+        top: 0;
+        left: -105%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100vh;
+        background: #0483f1;
+        transition: .4s all ease-in-out;
+    }
+    #nav ul li{
+        padding: 10px 30px;
+    }
+    #hamburger.d-none{
+        display: block !important;
+        font-size: 32px;
+        text-shadow: 2px 2px 2px #000;
+        color: #fff;
+        position: fixed;
+        z-index: 999999;
+        cursor: pointer !important;
+        top: 5%;
+        right: 5%;
+    }
+    #hamburger i:hover{
+        color: rgb(212, 211, 211) ;
+    }
+}

@@ -1,0 +1,12 @@
+<style>
+    .download:hover {
+        text-decoration: none;
+    }
+</style>
+<h4>{{ project.project_name|title }}</h4>
+<p class="text-justify">{{ project.description }}</p>
+<strong>Keywords-</strong> <i>{{ project.keywords }}</i>
+<br>
+<div class="d-flex flex-row justify-content-end">
+    <a href="{{ project.firebase_url }}" target="__blank" class="text-primary download">Download</a>
+</div>

@@ -1,0 +1,27 @@
+{% if projects.count == 0 %}
+<div class="alert alert-warning d-flex flex-row justify-content-center">
+    Not found.
+</div>
+{% else %}
+<table class="table">
+    <tr>
+        <th>Add Time</th>
+        <th>Project Title</th>
+        <th>Details</th>
+
+    </tr>
+    {% for project in projects %}
+    <tr>
+        <td>{{ project.last_updated }}</td>
+        <td>{{ project.project_name|title }}</td>
+        <td>
+            <a href="" class="text-primary download" onclick="details(event)"
+                url="{% url 'projects:details' project.pk %}" data-toggle="modal" data-target="#container-modal">
+                Details
+            </a>
+        </td>
+
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}

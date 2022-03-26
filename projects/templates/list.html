@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Projects</title>
+{% endblock %}
+
+{% block style %}
+<style>
+    .download:hover {
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="col-md-7 text-justify">
+    {% if projects.count == 0 %}
+    <div class="alert alert-warning d-flex flex-row justify-content-center">
+        Did you submit any&nbsp;<strong>Awesome Project</strong>?
+    </div>
+    {% else %}
+    <form action="" onsubmit="searching(event)">
+        <span class="bmd-form-group d-flex flex-row justify-content-end">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" id="search" aria-label="Search" style="width: 200px;" />
+            <input class="btn btn-outline-secondary mb-0" type="submit" value="Search">
+        </span>
+    </form>
+    <div id="data_table">
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Id</th>
+                <th>Session</th>
+                <th>Project Title</th>
+                <th>Details</th>
+            </tr>
+            {% for project in projects %}
+            <tr>
+                <td>{{ project.created_by }}</td>
+                <td>{{ project.id_no }}</td>
+                <td>{{ project.session }}</td>
+                <td>{{ project.project_name|title }}</td>
+                <td>
+                    <a href="" class="text-primary download" onclick="details(event)"
+                        url="{% url 'projects:details' project.pk %}" data-toggle="modal" data-target="#container-modal">
+                        Details
+                    </a>
+                </td>
+    
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+</div>
+
+ <!-- container modal -->
+<div class="modal fade" id="container-modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <!-- <h4 class="modal-title">Seller Registration</h4> -->
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" id="dynamic-load">
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+function searching(event) {
+    event.preventDefault();
+    var input = $(event.target.querySelector('#search'));
+    var query = input.val();
+    var url = window.location.origin + '/search/' + query.split(' ').join('+');
+    $('#data_table').load(url);
+}
+
+function details(event){
+    event.preventDefault();
+    $('#dynamic-load').html('')
+    $('#dynamic-load').load(
+        event.target.attributes.url.value
+    )
+}
+</script>
+{% endblock %}
